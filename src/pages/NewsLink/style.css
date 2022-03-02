@@ -1,0 +1,127 @@
+.news__wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(211, 211, 211);
+  border-radius: 25px;
+  border: 2px solid blue;
+}
+
+.news__inner {
+  padding: 20px;
+}
+
+.news__title::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: black;
+}
+
+.news__comments-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment__wrapper {
+  overflow-y: scroll;
+  height: 30vh;
+}
+
+.ant-comment-avatar {
+  cursor: initial;
+}
+
+.comment__date {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(150, 150, 150);
+}
+
+.comment__time {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.comment__more {
+  color: blue;
+  text-align: right;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.news__author span {
+  font-weight: bold;
+  color: black;
+}
+.news__author {
+  color: #626262;
+}
+
+.ant-comment-inner {
+  margin-right: 20px;
+}
+
+.ant-comment-nestet {
+  margin-left: 44px;
+}
+
+.ant-comment-content-author-name {
+  font-size: 14px !important;
+}
+
+.news__author-wrapper {
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.news__update {
+  border-radius: 10px;
+  border: 1px solid blue;
+  color: blue;
+  cursor: pointer;
+  transition: all 0.4s linear;
+}
+
+.news__update:hover {
+  background-color: hsl(240, 21%, 61%);
+  color: white;
+}
+
+.main {
+  text-align: center;
+}
+
+.news__buttons {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.news__author a {
+  margin-left: 5px;
+}
+
+.button {
+  margin: 10px 0;
+  padding: 5px 20px;
+}
+
+@media (max-width: 530px) {
+  .news__buttons {
+    gap: 10px;
+  }
+  .button {
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 450px) {
+  .news__wrapper {
+    width: 96%;
+  }
+}

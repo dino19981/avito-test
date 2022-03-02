@@ -1,18 +1,14 @@
 import './App.css';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { store } from './store';
+import { Route, Routes } from 'react-router-dom';
 import News from './pages/News/News';
+import NewsLink from './pages/NewsLink/NewsLink';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <div className="App">
-          <News />
-        </div>
-      </Router>
-    </Provider>
+    <Routes>
+      <Route path="/" element={<News />} />
+      <Route path="/news" element={<NewsLink />} />
+    </Routes>
   );
 }
 

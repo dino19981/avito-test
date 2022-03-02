@@ -1,29 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getIdNews, getLastNews } from '../../API/API';
 import Preloader from '../../components/Preloader/Preloader';
 import SingleNews from '../../components/SingleNews/SingleNews';
 import useNewsActions from '../../hooks/useNewsAction';
 import { useTypedSelector } from '../../hooks/useTypeSelector';
-import { columns } from '../../utils/data';
 import 'antd/dist/antd.css';
-import { Table } from 'antd';
+import Table from './Table/Table';
 
 export default function News() {
-  const { news } = useTypedSelector((state) => state.news);
+  const { news, isLoaded } = useTypedSelector((state) => state.news);
+  const idInterval: { current: NodeJS.Timeout | null } = useRef(null);
   const { getNews } = useNewsActions();
-  async function func() {
-    await getNews();
-    console.log(news);
-  }
+  const [typeNews, setTypeNews] = useState('newstories');
 
   useEffect(() => {
-    getNews();
+    idInterval.current = setInterval(() => {
+      getNews(typeNews);
+    }, 60000);
+    return () => {
+      clearInterval(idInterval.current!);
+    };
   }, []);
+
+  useEffect(() => {
+    getNews(typeNews);
+  }, [typeNews]);
+
   if (!news.length) return <Preloader />;
   return (
-    <div>
-      <button onClick={func}>qwe</button>
-      <Table columns={columns} dataSource={news} />
-    </div>
+    <main className="main">
+      <div className="news__buttons">
+        <button className="news__update button" onClick={() => setTypeNews('topstories')}>
+          Top news
+        </button>
+        <button className="news__update button" onClick={() => setTypeNews('beststories')}>
+          best news
+        </button>
+        <button className="news__update button" onClick={() => setTypeNews('newstories')}>
+          last news
+        </button>
+        <button className="news__update button" onClick={() => getNews(typeNews)}>
+          Update news
+        </button>
+      </div>
+      <Table news={news} />
+      {!isLoaded && <Preloader />}
+    </main>
   );
 }

@@ -1,12 +1,22 @@
 import React, { Dispatch } from 'react';
-import { getIdNews, getLastNews } from '../../API/API';
-import { newsTypes, TactionNews } from '../reducers/news';
+import { getIdNews, getLastNews, HEAD_URL } from '../../API/API';
+import { newsTypes, TActionNews } from '../reducers/news';
 
-export function getNews() {
-  return async (dispatch: Dispatch<TactionNews>) => {
-    const ids = await getIdNews();
+export function getNews(type: string) {
+  return async (dispatch: Dispatch<TActionNews>) => {
+    dispatch({ type: newsTypes.START_LOADING })
+    const ids = await getIdNews(type);
     const news = await getLastNews(ids);
-    console.log(news);
+    console.log('update news');
     dispatch({ type: newsTypes.UPDATE_NEWS, payload: news })
+  };
+}
+
+export function getSingleNews(id: number) {
+  return async (dispatch: Dispatch<TActionNews>) => {
+    const res = await fetch(`${HEAD_URL}item/${id}.json?print=pretty`);
+    const data = await res.json();
+    console.log(data);
+    dispatch({ type: newsTypes.GET_SINGLE_NEWS, payload: data });
   };
 }
