@@ -4,7 +4,7 @@ import { newsTypes, TActionNews } from '../reducers/news';
 
 export function getNews(type: string) {
   return async (dispatch: Dispatch<TActionNews>) => {
-    dispatch({ type: newsTypes.START_LOADING })
+    dispatch({ type: newsTypes.START_LOADING });
     const ids = await getIdNews(type);
     const news = await getLastNews(ids);
     console.log('update news');
