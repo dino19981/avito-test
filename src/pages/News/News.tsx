@@ -1,32 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { getIdNews, getLastNews } from '../../API/API';
+import React from 'react';
 import Preloader from '../../components/Preloader/Preloader';
-import SingleNews from '../../components/SingleNews/SingleNews';
 import useNewsActions from '../../hooks/useNewsAction';
 import { useTypedSelector } from '../../hooks/useTypeSelector';
 import 'antd/dist/antd.css';
 import Table from './Table/Table';
+import { useUpdateNews } from '../../hooks/customHooks/useUpdateNews';
 
 export default function News() {
   const { news, isLoaded } = useTypedSelector((state) => state.news);
-  const idInterval: { current: NodeJS.Timeout | null } = useRef(null);
+  const [typeNews, setTypeNews] = useUpdateNews();
   const { getNews } = useNewsActions();
-  const [typeNews, setTypeNews] = useState('newstories');
-
-  useEffect(() => {
-    idInterval.current = setInterval(() => {
-      getNews(typeNews);
-    }, 60000);
-    return () => {
-      clearInterval(idInterval.current!);
-    };
-  }, []);
-
-  useEffect(() => {
-    getNews(typeNews);
-  }, [typeNews]);
 
   if (!news.length) return <Preloader />;
+
   return (
     <main className="main">
       <div className="news__buttons">

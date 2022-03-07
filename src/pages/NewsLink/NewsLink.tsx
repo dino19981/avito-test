@@ -1,57 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './style.css';
 import Preloader from '../../components/Preloader/Preloader';
 import { useTypedSelector } from '../../hooks/useTypeSelector';
 import { getDate, getTime } from '../../utils/utils';
-import { getComments } from '../../API/API';
 import ExampleComment from '../../components/Comment/Comment';
-import { IComment } from '../../types/types';
-import useNewsActions from '../../hooks/useNewsAction';
 import { useNavigate } from 'react-router-dom';
+import { useUpdateComments } from '../../hooks/customHooks/useUpdateComments';
 
 export default function NewsLink() {
   const { singleNews, isLoaded } = useTypedSelector((state) => state.news);
-  const { getSingleNews } = useNewsActions();
   const { by, url, descendants, time, title, kids } = singleNews;
-  const [isLoadedComments, setIsLoadedComments] = useState(false);
-  const [comments, setComments] = useState<IComment[]>([]);
-  const idInterval: { current: NodeJS.Timeout | null } = useRef(null);
+  const [comments, updateComments, isLoadedComments, isUpdateComments] = useUpdateComments();
   const navigate = useNavigate();
-
-  async function updateComments() {
-    if (kids) {
-      const comment = await getComments(kids!);
-      setComments(comment);
-    }
-
-    if (!isLoadedComments) {
-      setIsLoadedComments(true);
-    }
-    console.log('update comments');
-  }
-
-  useEffect(() => {
-    if (!localStorage.getItem('currentNews')) {
-      updateComments();
-    } else if (!by && localStorage.getItem('currentNews')) {
-      const id = +localStorage.getItem('currentNews')!;
-      getSingleNews(id);
-    }
-
-    idInterval.current = setInterval(async () => {
-      updateComments();
-    }, 60000);
-
-    return () => {
-      clearInterval(idInterval.current!);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded && !comments.length) {
-      updateComments();
-    }
-  }, [isLoaded]);
 
   if (!isLoaded || !isLoadedComments) {
     return <Preloader />;
@@ -86,12 +46,11 @@ export default function NewsLink() {
         </div>
         <div className="comment__wrapper">
           {comments.length ? (
-            comments.map((comment) => (
-              <ExampleComment data={comment} update={{ setComments, kids }} key={comment.id} />
-            ))
+            comments.map((comment) => <ExampleComment data={comment} key={comment.id} />)
           ) : (
             <p>Нет комментариев</p>
           )}
+          {!isUpdateComments && <Preloader />}
         </div>
       </div>
     </div>

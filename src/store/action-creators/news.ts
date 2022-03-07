@@ -1,6 +1,6 @@
 import React, { Dispatch } from 'react';
 import { getIdNews, getLastNews, HEAD_URL } from '../../API/API';
-import { newsTypes, TActionNews } from '../reducers/news';
+import { newsTypes, TActionNews } from '../../types/types';
 
 export function getNews(type: string) {
   return async (dispatch: Dispatch<TActionNews>) => {
@@ -16,7 +16,6 @@ export function getSingleNews(id: number) {
   return async (dispatch: Dispatch<TActionNews>) => {
     const res = await fetch(`${HEAD_URL}item/${id}.json?print=pretty`);
     const data = await res.json();
-    console.log(data);
     dispatch({ type: newsTypes.GET_SINGLE_NEWS, payload: data });
   };
 }

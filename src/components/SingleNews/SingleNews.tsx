@@ -1,16 +1,15 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { memo, ReactNode, useEffect } from 'react';
 import './style.css';
-import { INews } from '../../types/types';
+import { INews, newsTypes } from '../../types/types';
 import { getDate, getTime } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { newsTypes } from '../../store/reducers/news';
 
 type TSingleNews = {
   data: INews;
 };
 
-export default function SingleNews({ data }: TSingleNews) {
+function SingleNews({ data }: TSingleNews) {
   const { by, score, time, title } = data;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,3 +31,5 @@ export default function SingleNews({ data }: TSingleNews) {
     </tr>
   );
 }
+
+export default memo(SingleNews);

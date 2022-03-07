@@ -1,34 +1,5 @@
-import React from 'react';
-import { INews } from '../../types/types';
+import { newsTypes, TActionNews, TNewsState } from '../../types/types';
 
-export enum newsTypes {
-  UPDATE_NEWS = 'UPDATE_NEWS',
-  GET_SINGLE_NEWS = 'GET_SINGLE_NEWS',
-  END_LOADING = 'END_LOADING',
-  START_LOADING = 'START_LOADING',
-}
-
-export type TActionNews = TActionAllNews | TSingleNews | TLoading
-
-export type TActionAllNews = {
-  type: newsTypes.UPDATE_NEWS
-  payload: INews[]
-}
-
-type TSingleNews = {
-  type: newsTypes.GET_SINGLE_NEWS
-  payload: INews
-}
-
-type TLoading = {
-  type: newsTypes.START_LOADING
-}
-
-type TNewsState = {
-  news: INews[]
-  singleNews: INews
-  isLoaded: boolean
-}
 const initialState = {
   news: [],
   singleNews: {

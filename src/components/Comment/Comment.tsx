@@ -6,12 +6,10 @@ import { getDate, getTime } from '../../utils/utils';
 
 type TChildren = {
   data: IComment;
-  update: { setComments: (state: IComment[]) => void; kids?: number[] };
 };
 
-const ExampleComment = ({ data, update }: TChildren) => {
+const ExampleComment = ({ data }: TChildren) => {
   const [comments, setComments] = useState<IComment[]>([]);
-  const kids = data.kids;
 
   async function getMoreComments() {
     const comments = await getComments(data.kids);
@@ -46,7 +44,7 @@ const ExampleComment = ({ data, update }: TChildren) => {
       {comments.length ? (
         <div className="ant-comment-nestet">
           {comments.map((comment) => (
-            <ExampleComment update={{ setComments, kids }} data={comment} key={comment.id} />
+            <ExampleComment data={comment} key={comment.id} />
           ))}
         </div>
       ) : null}
