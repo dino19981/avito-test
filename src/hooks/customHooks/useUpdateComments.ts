@@ -26,6 +26,7 @@ export const useUpdateComments = (): updateComments => {
 
     if (!isLoadedComments) {
       setIsLoadedComments(true);
+      setIsUpdateComments(true);
     }
     console.log('update comments');
   }
